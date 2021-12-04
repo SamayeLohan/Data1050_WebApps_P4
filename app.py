@@ -42,15 +42,14 @@ app.layout = html.Div(children=[
      Input('column_dropdown', 'value'), 
      Input('value_dropdown', 'value')]
 )
-def update_output(i, c, v):
-        pt = df.pivot_table(index=i, columns=c, values=v, aggfunc=identity)
+def update_output(ind, col, val):
+        piv_table = df.pivot_table(index=ind, columns=col, values=val, aggfunc=identity)
         return html.Div([
-            dash_table.DataTable(
-                id='table',
-                columns=[{"name": i, "id": i} for i in pt.columns],
-                data=pt.reset_index().to_dict('rows')
-            )
-        ])
-    
+        dash_table.DataTable(
+            id='table',
+            columns=[{"name": x, "id": x} for x in pivot_table.columns],
+            data=pivot_table.reset_index().to_dict('rows')
+        )
+    ])
 
 app.run_server(debug=True, host="0.0.0.0")
